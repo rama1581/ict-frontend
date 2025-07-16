@@ -3,7 +3,9 @@ import { Routes, Route } from 'react-router-dom'
 // Impor komponen Layout dan Halaman
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
-import BeritaPage from './pages/BeritaPage'
+import Post from './pages/PostPage'
+import News from './pages/NewsPage'
+
 
 function App() {
   return (
@@ -13,7 +15,8 @@ function App() {
         <Route index element={<HomePage />} />
         
         {/* Rute untuk Halaman Berita */}
-        <Route path="berita" element={<BeritaPage />} />
+        <Route path="post" element={<Post />} />
+        <Route path="news" element={<News />} />
       </Route>
     </Routes>
   )

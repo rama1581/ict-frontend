@@ -15,10 +15,16 @@ const Navbar = () => {
           Beranda
         </Link>
         <Link
-          to="/berita"
+          to="/post"
           className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-300"
         >
-          Berita
+          Post
+        </Link>
+        <Link
+          to="/news"
+          className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors duration-300"
+        >
+          News
         </Link>
       </div>
     </nav>
