@@ -49,7 +49,7 @@ const PostPage = () => {
                             {/* 1. TAMPILKAN GAMBAR DI SINI */}
                             {post.image && (
                                 <img
-                                    src={`http://127.0.0.1:8000/storage/${post.image}`}
+                                    src={`http://ict-backend.test/storage/${post.image}`}
                                     alt={post.title}
                                     className="w-full h-72 object-cover"
                                 />

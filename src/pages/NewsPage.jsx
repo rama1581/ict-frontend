@@ -34,7 +34,7 @@ const NewsPage = () => {
                             {/* Menampilkan THUMBNAIL */}
                             {item.thumbnail && (
                                 <img
-                                    src={`http://127.0.0.1:8000/storage/${item.thumbnail}`}
+                                    src={`http://ict-backend.test/storage/${item.thumbnail}`}
                                     alt={item.title}
                                     className="w-full h-80 object-cover"
                                 />
