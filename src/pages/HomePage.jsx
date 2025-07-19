@@ -60,7 +60,10 @@ function HomePage() {
 
     return (
         <section className="relative w-full min-h-screen">
-            
+            <helmet>
+                <title>Beranda - ICT Taruna Bakti</title>
+                <meta name="description" content="Selamat datang di halaman beranda ICT Taruna Bakti. Temukan berita terbaru, panduan pengguna, dan informasi penting lainnya." />
+            </helmet>
             {/* 👇 BAGIAN 2: PASTIKAN KOMPONEN INI DIPANGGIL DI SINI */}
             <BackgroundSlideshow />
             

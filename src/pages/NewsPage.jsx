@@ -12,6 +12,9 @@ const formatDate = (dateString) => {
 const NewsCard = ({ news }) => {
   return (
     <div className="flex flex-col group">
+      <helmet>
+        <title>Berita & Informasi - ICT Taruna Bakti</title>
+      </helmet>
       {/* Thumbnail Gambar */}
       <Link to={`/news/${news.slug}`} className="block mb-3">
         <div className="relative overflow-hidden rounded-xl shadow-md">
