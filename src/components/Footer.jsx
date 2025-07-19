@@ -75,7 +75,7 @@ const Footer = () => {
                 zoom={17} 
                 style={{ height: '100%', width: '100%' }}
                 scrollWheelZoom={false}
-                attributionControl={true}
+                attributionControl={false}
               >
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
