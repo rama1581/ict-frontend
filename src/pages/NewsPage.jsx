@@ -8,18 +8,16 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString('id-ID', options);
 };
 
+
 // --- Komponen Kartu Berita (Gaya YouTube) ---
 const NewsCard = ({ news }) => {
   return (
     <div className="flex flex-col group">
-      <helmet>
-        <title>Berita & Informasi - ICT Taruna Bakti</title>
-      </helmet>
       {/* Thumbnail Gambar */}
       <Link to={`/news/${news.slug}`} className="block mb-3">
         <div className="relative overflow-hidden rounded-xl shadow-md">
           <img
-             src={`http://ict-backend.test/storage/${news.thumbnail}`}
+            src={`http://ict-backend.test/storage/${news.thumbnail}`}
             alt={news.title}
             className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
           />
@@ -28,7 +26,6 @@ const NewsCard = ({ news }) => {
 
       {/* Detail Konten */}
       <div className="flex">
-        {/* Di sini bisa ditambahkan avatar penulis jika ada */}
         <div className="flex-grow">
           <Link to={`/news/${news.slug}`}>
             <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-800 transition-colors">
@@ -36,12 +33,8 @@ const NewsCard = ({ news }) => {
             </h3>
           </Link>
           <div className="mt-1 text-sm text-gray-600">
-            {/* Nama Penulis */}
-            <p>{news.author?.name || 'Admin'}</p>
-            {/* Kategori dan Tanggal */}
+            <p className="font-medium text-gray-800">{news.author?.name || 'Admin'}</p>
             <p>
-              <span>{news.category?.name || 'Umum'}</span>
-              <span className="mx-1.5">&bull;</span>
               <span>{formatDate(news.created_at)}</span>
             </p>
           </div>
@@ -59,6 +52,7 @@ const NewsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    document.title = 'Berita & Informasi - ICT Taruna Bakti';
     const fetchNews = async () => {
       try {
         const response = await apiClient.get('/api/news');
@@ -82,7 +76,6 @@ const NewsPage = () => {
         <h1 className="text-3xl font-extrabold text-blue-900 mb-10">Berita & Informasi</h1>
         
         {newsItems.length > 0 ? (
-          // Grid responsif seperti YouTube
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
             {newsItems.map((item) => (
               <NewsCard key={item.id} news={item} />

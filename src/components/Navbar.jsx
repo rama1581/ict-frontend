@@ -3,7 +3,6 @@ import { Link, NavLink } from 'react-router-dom';
 import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 
 const Navbar = () => {
-  // State sekarang hanya untuk menu mobile, lebih simpel
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const activeLinkStyle = {
@@ -32,12 +31,15 @@ const Navbar = () => {
               Beranda
             </NavLink>
 
-            {/* Dropdown Layanan menggunakan 'group' */}
             <div className="relative group">
-              <button className="flex items-center gap-2 text-lg font-medium text-blue-900 group-hover:text-black transition-colors focus:outline-none">
+              {/* 👇 DIUBAH MENJADI NAVLINK */}
+              <NavLink 
+                to="/layanan" 
+                className="flex items-center gap-2 text-lg font-medium text-blue-900 group-hover:text-black transition-colors focus:outline-none"
+                style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+              >
                 Layanan <FaChevronDown size={12} />
-              </button>
-              {/* Dropdown menu akan muncul saat 'group' di-hover */}
+              </NavLink>
               <div className="absolute top-full pt-2 w-56 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
                 <div className="bg-white shadow-lg rounded-md py-2">
                   <Link to="/layanan/jaringan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Jaringan & Internet</Link>
@@ -50,11 +52,15 @@ const Navbar = () => {
               Panduan
             </NavLink>
 
-            {/* Dropdown Dukungan menggunakan 'group' */}
             <div className="relative group">
-               <button className="flex items-center gap-2 text-lg font-medium text-blue-900 group-hover:text-black transition-colors focus:outline-none">
+               {/* 👇 DIUBAH MENJADI NAVLINK */}
+               <NavLink
+                to="/dukungan"
+                className="flex items-center gap-2 text-lg font-medium text-blue-900 group-hover:text-black transition-colors focus:outline-none"
+                style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
+              >
                 Dukungan <FaChevronDown size={12} />
-              </button>
+              </NavLink>
               <div className="absolute top-full pt-2 w-56 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
                 <div className="bg-white shadow-lg rounded-md py-2">
                   <Link to="/dukungan/kontak" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Hubungi Kami</Link>
@@ -68,7 +74,7 @@ const Navbar = () => {
             </NavLink>
           </div>
 
-          {/* Tombol Hamburger (tidak ada perubahan) */}
+          {/* Tombol Hamburger */}
           <div className="md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!isMobileMenuOpen)}
