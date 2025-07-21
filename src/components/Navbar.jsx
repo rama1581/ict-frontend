@@ -44,6 +44,8 @@ const Navbar = () => {
                 <div className="bg-white shadow-lg rounded-md py-2">
                   <Link to="/layanan/jaringan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Jaringan & Internet</Link>
                   <Link to="/layanan/email" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Email & Akun</Link>
+                  <Link to="/layanan/software" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Software & Aplikasi</Link>
+                  <Link to="/layanan/bantuan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Bantuan Teknis</Link>
                 </div>
               </div>
             </div>
@@ -94,6 +96,8 @@ const Navbar = () => {
             <h3 className="px-3 pt-4 pb-2 text-sm font-semibold text-gray-500">Layanan</h3>
             <NavLink to="/layanan/jaringan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Jaringan & Internet</NavLink>
             <NavLink to="/layanan/email" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Email & Akun</NavLink>
+            <NavLink to="/layanan/software" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Software & Aplikasi</NavLink>
+            <NavLink to="/layanan/bantuan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Bantuan Teknis</NavLink>
             <h3 className="px-3 pt-4 pb-2 text-sm font-semibold text-gray-500">Dukungan</h3>
             <NavLink to="/dukungan/kontak" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Hubungi Kami</NavLink>
             <NavLink to="/dukungan/faq" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>FAQ</NavLink>
