@@ -37,7 +37,11 @@ const BackgroundSlideshow = () => {
     );
 };
 
-
+function decodeHtmlEntities(str) {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = str;
+  return txt.value;
+}
 // Komponen Utama HomePage
 function HomePage() {
     const [featuredNews, setFeaturedNews] = useState([]);
@@ -99,7 +103,7 @@ function HomePage() {
                                                 {slide.title}
                                             </h1>
                                             <p className="text-base text-gray-700 mb-6">
-                                                {slide.content.replace(/<[^>]+>/g, '').substring(0, 100)}...
+                                            {decodeHtmlEntities(slide.content.replace(/<[^>]+>/g, '').substring(0, 100))}...
                                             </p>
                                             <Link
                                                 to={`/news/${slide.slug}`}

@@ -18,7 +18,8 @@ import DukunganPage from './pages/DukunganPage';
 import FaqPage from './pages/FaqPage';
 import KontakPage from './pages/KontakPage';
 import TentangPage from './pages/TentangPage';
-import RequestFormPage from './pages/RequestFormPage';
+import ServiceStatusPage from './pages/ServiceStatusPage';
+
 function App() {
   const location = useLocation();
   useEffect(() => {
@@ -33,7 +34,7 @@ function App() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="news" element={<NewsPage />} />
+          <Route path="pengumuman" element={<NewsPage />} />
           <Route path="news/:slug" element={<NewsDetailPage />} />
           <Route path="layanan" element={<LayananPage />} />
           <Route path="layanan/jaringan" element={<JaringanPage />} />
@@ -45,7 +46,7 @@ function App() {
           <Route path="dukungan/faq" element={<FaqPage />} />
           <Route path="dukungan/kontak" element={<KontakPage />} />
           <Route path="tentang" element={<TentangPage />} />
-          <Route path="request-form" element={<RequestFormPage />} />
+          <Route path="status-layanan" element={<ServiceStatusPage />} />
         </Route>
       </Routes>
     </AnimatePresence>

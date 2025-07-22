@@ -2,10 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import apiClient from '../services/api';
 
-// --- Helper Function untuk Format Tanggal ---
+// --- Helper Function untuk Format Tanggal dan Jam ---
 const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('id-ID', options);
+  const options = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    hour: '2-digit', // <-- Tambahkan ini
+    minute: '2-digit', // <-- Tambahkan ini
+  };
+  // Ganti toLocaleDateString menjadi toLocaleString
+  return new Date(dateString).toLocaleString('id-ID', options).replace('.', ':');
 };
 
 
@@ -52,7 +59,7 @@ const NewsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    document.title = 'Berita & Informasi - ICT Taruna Bakti';
+    document.title = 'Pengumuman - ICT Taruna Bakti';
     const fetchNews = async () => {
       try {
         const response = await apiClient.get('/api/news');
@@ -67,13 +74,13 @@ const NewsPage = () => {
     fetchNews();
   }, []);
 
-  if (loading) return <div className="text-center p-20">Memuat berita...</div>;
+  if (loading) return <div className="text-center p-20">Memuat pengumuman...</div>;
   if (error) return <div className="text-center p-20 text-red-500">{error}</div>;
 
   return (
     <div className="bg-slate-50">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-3xl font-extrabold text-blue-900 mb-10">Berita & Informasi</h1>
+        <h1 className="text-3xl font-extrabold text-blue-900 mb-10">Pengumuman Layanan</h1>
         
         {newsItems.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
@@ -82,7 +89,7 @@ const NewsPage = () => {
             ))}
           </div>
         ) : (
-          <p className="text-center text-gray-500">Belum ada berita yang dipublikasikan.</p>
+          <p className="text-center text-gray-500">Belum ada pengumuman.</p>
         )}
       </div>
     </div>

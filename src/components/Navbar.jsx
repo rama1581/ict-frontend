@@ -65,14 +65,15 @@ const Navbar = () => {
               </NavLink>
               <div className="absolute top-full pt-2 w-56 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
                 <div className="bg-white shadow-lg rounded-md py-2">
-                  <Link to="/dukungan/kontak" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Hubungi Kami</Link>
+                  <Link to="/dukungan/kontak" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Pengajuan Layanan</Link>
                   <Link to="/dukungan/faq" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">FAQ</Link>
+                  <Link to="/status-layanan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Status Layanan</Link>
                 </div>
               </div>
             </div>
 
-            <NavLink to="/news" className="text-lg font-medium text-blue-900 hover:text-black transition-colors" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>
-              Berita
+            <NavLink to="/pengumuman" className="text-lg font-medium text-blue-900 hover:text-black transition-colors" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>
+              Pengumuman
             </NavLink>
           </div>
 
@@ -99,11 +100,12 @@ const Navbar = () => {
             <NavLink to="/layanan/software" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Software & Aplikasi</NavLink>
             <NavLink to="/layanan/bantuan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Bantuan Teknis</NavLink>
             <h3 className="px-3 pt-4 pb-2 text-sm font-semibold text-gray-500">Dukungan</h3>
-            <NavLink to="/dukungan/kontak" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Hubungi Kami</NavLink>
+            <NavLink to="/dukungan/kontak" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Pengajuan Layanan</NavLink>
             <NavLink to="/dukungan/faq" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>FAQ</NavLink>
+            <NavLink to="/status-layanan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Status Layanan</NavLink>
             <div className="border-t border-gray-200 my-2"></div>
             <NavLink to="/panduan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Panduan</NavLink>
-            <NavLink to="/news" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Berita</NavLink>
+            <NavLink to="/pengumuman" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Pengumuman</NavLink>
           </div>
         </div>
       )}

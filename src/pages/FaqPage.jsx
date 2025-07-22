@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // <-- Perbaikan di sini
 import { FaChevronDown } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const faqData = [
   { question: 'Bagaimana cara mendapatkan akun email Taruna Bakti?', answer: 'Akun email akan dibuatkan secara otomatis saat Anda terdaftar sebagai siswa/staf. Silakan hubungi admin ICT untuk informasi login awal.' },
@@ -9,32 +10,48 @@ const faqData = [
 
 const AccordionItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="border-b border-gray-200 py-4">
-      <button
+    <div className="border-b border-gray-200 py-6">
+      <motion.button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex justify-between items-center text-left text-lg font-semibold text-blue-900"
+        whileHover={{ color: '#4f46e5' }}
       >
-        <span>{question}</span>
-        <FaChevronDown className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
-      </button>
-      {isOpen && (
-        <div className="mt-4 text-slate-600">
-          <p>{answer}</p>
-        </div>
-      )}
+        <span className="flex-1 pr-4">{question}</span>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <FaChevronDown className="text-indigo-500" />
+        </motion.div>
+      </motion.button>
+      
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <p className="pt-4 text-slate-600 leading-relaxed">
+              {answer}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 const FaqPage = () => {
-  // Menambahkan useEffect untuk mengatur judul tab
   useEffect(() => {
     document.title = 'FAQ - ICT Taruna Bakti';
   }, []);
 
   return (
-    // Menghapus <Helmet> dan React Fragment (<>)
     <div className="bg-slate-50 py-16">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -47,7 +64,7 @@ const FaqPage = () => {
           </p>
         </div>
         
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-8">
           {faqData.map((faq, index) => (
             <AccordionItem key={index} question={faq.question} answer={faq.answer} />
           ))}

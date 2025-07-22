@@ -1,99 +1,106 @@
-import React, { useEffect } from 'react';
-import { FaInstagram, FaGlobe, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import apiClient from '../services/api';
+import { motion } from 'framer-motion';
 
 const KontakPage = () => {
-  // Menambahkan useEffect untuk mengatur judul tab
-  useEffect(() => {
-    document.title = 'Hubungi Kami - ICT Taruna Bakti';
-  }, []);
-
-  return (
-    // Menghapus <Helmet> dan React Fragment (<>)
-    <div className="bg-slate-50">
-      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-        
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-extrabold text-blue-900 sm:text-5xl">
-            Hubungi Kami
-          </h1>
-          <p className="mt-4 text-xl text-slate-600 max-w-2xl mx-auto">
-            Punya pertanyaan, keluhan, atau butuh bantuan? Jangan ragu untuk menghubungi kami melalui form di bawah ini atau detail kontak yang tersedia.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          
-          {/* Kolom Kiri: Informasi Kontak */}
-          <div className="bg-white p-8 rounded-2xl shadow-lg h-full">
-            <h2 className="text-2xl font-bold text-blue-900 mb-6">Informasi Kontak</h2>
-            <div className="space-y-6 text-slate-600">
-              {/* Alamat */}
-              <div className="flex items-start gap-4">
-                <FaMapMarkerAlt size={20} className="text-indigo-500 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-gray-800">Alamat</h3>
-                  <p>Jl. L. L. R.E. Martadinata No.52, Citarum, Bandung</p>
-                </div>
-              </div>
-              {/* Email */}
-              <div className="flex items-start gap-4">
-                <FaEnvelope size={20} className="text-indigo-500 mt-1 flex-shrink-0" />
-                 <div>
-                  <h3 className="font-semibold text-gray-800">Email</h3>
-                  <a href="mailto:icttarunabakti@tarunabakti.or.id" className="hover:text-indigo-600">icttarunabakti@tarunabakti.or.id</a>
-                </div>
-              </div>
-              {/* Instagram */}
-              <div className="flex items-start gap-4">
-                <FaInstagram size={20} className="text-indigo-500 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-gray-800">Instagram</h3>
-                  <a href="https://www.instagram.com/tarunabakti_id/" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600">@tarunabakti_id</a>
-                </div>
-              </div>
-               {/* Website */}
-              <div className="flex items-start gap-4">
-                <FaGlobe size={20} className="text-indigo-500 mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-gray-800">Website Resmi</h3>
-                  <a href="https://tarunabakti.or.id" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600">tarunabakti.or.id</a>
-                </div>
-              </div>
-            </div>
+   const [formData, setFormData] = useState({
+      name: '',
+      email: '',
+      category: 'Bantuan Teknis',
+      message: '',
+    });
+    const [status, setStatus] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+  
+    useEffect(() => {
+      document.title = 'Formulir Pengajuan - ICT Taruna Bakti';
+    }, []);
+  
+    const handleChange = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
+      setStatus({ message: 'Mengirim...', type: 'info' });
+      try {
+        await apiClient.post('/api/requests', formData);
+        setStatus({ message: 'Pengajuan Anda berhasil terkirim!', type: 'success' });
+        setFormData({ name: '', email: '', category: 'Bantuan Teknis', message: '' });
+      } catch (error) {
+        // 👇 Tangkap dan tampilkan pesan error dari Laravel
+        if (error.response && error.response.status === 422) {
+          // 422 adalah status error validasi
+          const validationErrors = error.response.data.errors;
+          if (validationErrors.email) {
+            setStatus({ message: validationErrors.email[0], type: 'error' });
+          } else {
+            setStatus({ message: 'Data yang Anda masukkan tidak valid.', type: 'error' });
+          }
+        } else {
+          setStatus({ message: 'Terjadi kesalahan pada server. Coba lagi.', type: 'error' });
+        }
+        console.error(error);
+      } finally {
+        setIsSubmitting(false);
+      }
+  };
+  
+    return (
+      <div className="bg-slate-50 py-16">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-extrabold text-blue-900">Formulir Pengajuan Layanan</h1>
+            <p className="mt-4 text-lg text-slate-600">Isi formulir di bawah ini untuk meminta layanan atau bantuan teknis dari tim ICT.</p>
           </div>
-
-          {/* Kolom Kanan: Form Kontak */}
-          <div className="bg-white p-8 rounded-2xl shadow-lg">
-            <h2 className="text-2xl font-bold text-blue-900 mb-6">Kirim Pesan Langsung</h2>
-            <form action="#" method="POST" className="space-y-6">
+  
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white p-8 rounded-2xl shadow-lg"
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                <input type="text" name="name" id="name" required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+                <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Alamat Email</label>
-                <input type="email" name="email" id="email" required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+                <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
               </div>
-               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subjek</label>
-                <input type="text" name="subject" id="subject" required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                <select name="category" id="category" value={formData.category} onChange={handleChange} className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                  <option>Bantuan Teknis</option>
+                  <option>Reset Password</option>
+                  <option>Permintaan Software</option>
+                  <option>Lainnya</option>
+                </select>
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
-                <textarea name="message" id="message" rows="4" required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                <textarea name="message" id="message" rows="4" value={formData.message} onChange={handleChange} required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
               </div>
               <div>
-                <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
-                  Kirim Pesan
+                <button type="submit" disabled={isSubmitting} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-blue-800 hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:bg-gray-400">
+                  {isSubmitting ? 'Mengirim...' : 'Kirim Pengajuan'}
                 </button>
               </div>
+              {status && (
+                <p className={`text-center p-3 rounded-md text-sm ${
+                  status.type === 'success' ? 'bg-green-100 text-green-800' : 
+                  status.type === 'error' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                }`}>
+                  {status.message}
+                </p>
+              )}
             </form>
-          </div>
-
+          </motion.div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
 export default KontakPage;
