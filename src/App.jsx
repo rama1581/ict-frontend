@@ -19,6 +19,7 @@ import FaqPage from './pages/FaqPage';
 import KontakPage from './pages/KontakPage';
 import TentangPage from './pages/TentangPage';
 import ServiceStatusPage from './pages/ServiceStatusPage';
+import StatusPengajuan from './pages/StatusPengajuan';
 
 function App() {
   const location = useLocation();
@@ -47,6 +48,7 @@ function App() {
           <Route path="dukungan/kontak" element={<KontakPage />} />
           <Route path="tentang" element={<TentangPage />} />
           <Route path="status-layanan" element={<ServiceStatusPage />} />
+          <Route path="status-pengajuan" element={<StatusPengajuan />} />
         </Route>
       </Routes>
     </AnimatePresence>

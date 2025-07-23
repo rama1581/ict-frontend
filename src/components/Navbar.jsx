@@ -68,6 +68,7 @@ const Navbar = () => {
                   <Link to="/dukungan/kontak" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Pengajuan Layanan</Link>
                   <Link to="/dukungan/faq" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">FAQ</Link>
                   <Link to="/status-layanan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Status Layanan</Link>
+                  <Link to="/status-pengajuan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Status Pengajuan</Link>
                 </div>
               </div>
             </div>
@@ -103,6 +104,7 @@ const Navbar = () => {
             <NavLink to="/dukungan/kontak" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Pengajuan Layanan</NavLink>
             <NavLink to="/dukungan/faq" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>FAQ</NavLink>
             <NavLink to="/status-layanan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Status Layanan</NavLink>
+            <navLink to="/status-pengajuan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Status Pengajuan</navLink>
             <div className="border-t border-gray-200 my-2"></div>
             <NavLink to="/panduan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Panduan</NavLink>
             <NavLink to="/pengumuman" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Pengumuman</NavLink>

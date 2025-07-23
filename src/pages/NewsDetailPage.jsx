@@ -51,7 +51,7 @@ const NewsDetailPage = () => {
     <div className="bg-white py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <article>
-          <Link to="/news" className="text-blue-800 hover:underline mb-8 inline-block">
+          <Link to="/pengumuman" className="text-blue-800 hover:underline mb-8 inline-block">
             &larr; Kembali ke semua berita
           </Link>
           
