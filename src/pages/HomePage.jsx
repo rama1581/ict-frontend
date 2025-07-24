@@ -39,9 +39,7 @@ function decodeHtmlEntities(str) {
 function HomePage() {
     const [featuredNews, setFeaturedNews] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isChatOpen, setIsChatOpen] = useState(false);
-    const [chatMessages, setChatMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
+
 
     useEffect(() => {
         const fetchFeaturedNews = async () => {
@@ -57,29 +55,6 @@ function HomePage() {
         };
         fetchFeaturedNews();
     }, []);
-const handleSendMessage = async () => {
-    if (newMessage.trim() === '') return;
-
-    // Tampilkan langsung di UI
-    setChatMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'user', text: newMessage },
-    ]);
-
-    const messageToSend = newMessage;
-    setNewMessage('');
-
-    try {
-        const response = await apiClient.post('/messages', {
-            message: messageToSend,
-        });
-
-        console.log('Pesan berhasil disimpan:', response.data);
-    } catch (error) {
-        console.error('Gagal mengirim pesan:', error);
-        // Tampilkan error ke UI jika perlu
-    }
-};
 
     return (
         <section className="relative w-full min-h-screen">
@@ -136,44 +111,6 @@ const handleSendMessage = async () => {
                             ))}
                         </Swiper>
                     </div>
-                )}
-            </div>
-
-            {/* 👇 UI Chat Floating */}
-            <div className="fixed bottom-6 right-6 z-30">
-                {isChatOpen ? (
-                    <div className="bg-white shadow-lg rounded-xl w-80 h-96 flex flex-col border border-gray-200">
-                        <div className="bg-blue-700 text-white px-4 py-3 rounded-t-xl flex justify-between items-center">
-                            <span>Live Chat</span>
-                            <button onClick={() => setIsChatOpen(false)} className="text-white font-bold">✕</button>
-                        </div>
-                        <div className="flex-1 overflow-y-auto p-3 space-y-2">
-                            {chatMessages.map((msg, idx) => (
-                                <div key={idx} className={`text-sm px-3 py-2 rounded-xl max-w-xs ${msg.sender === 'user' ? 'bg-blue-100 self-end ml-auto' : 'bg-gray-200'}`}>
-                                    {msg.text}
-                                </div>
-                            ))}
-                        </div>
-                        <div className="p-3 border-t flex items-center gap-2">
-                            <input
-                                type="text"
-                                placeholder="Ketik pesan..."
-                                className="flex-1 px-3 py-2 border rounded-lg text-sm"
-                                value={newMessage}
-                                onChange={(e) => setNewMessage(e.target.value)}
-                                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                            />
-                            <button onClick={handleSendMessage} className="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">Kirim</button>
-                        </div>
-                    </div>
-                ) : (
-                    <button
-                        onClick={() => setIsChatOpen(true)}
-                        className="w-14 h-14 bg-blue-700 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-800 transition-all"
-                        title="Buka Chat"
-                    >
-                        💬
-                    </button>
                 )}
             </div>
         </section>
