@@ -9,13 +9,13 @@ import {
   FaHourglassHalf,
   FaTools,
 } from 'react-icons/fa';
+import { useQuery } from '@tanstack/react-query';
 
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleString('id-ID', {
+const formatDate = (dateString) =>
+  new Date(dateString).toLocaleString('id-ID', {
     dateStyle: 'long',
     timeStyle: 'short',
   });
-};
 
 const statusConfig = {
   pending: {
@@ -40,9 +40,7 @@ const statusConfig = {
 
 const StatusPengajuanPage = () => {
   const [ticketCode, setTicketCode] = useState('');
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [submittedCode, setSubmittedCode] = useState('');
 
   useEffect(() => {
     document.title = 'Status Pengajuan - ICT Taruna Bakti';
@@ -50,20 +48,27 @@ const StatusPengajuanPage = () => {
     if (saved) setTicketCode(saved);
   }, []);
 
+  const {
+    data: result,
+    error,
+    isFetching,
+    refetch,
+    isFetched,
+  } = useQuery({
+    queryKey: ['ticket-status', submittedCode],
+    queryFn: async () => {
+      const res = await apiClient.get(`/api/requests/status/${ticketCode}`);
+      return res.data;
+    },
+    enabled: false, // disabled until form submitted
+    retry: false,
+  });
+
   const handleCheckStatus = async (e) => {
     e.preventDefault();
-    setError('');
-    setResult(null);
-    setIsLoading(true);
-
-    try {
-      const res = await apiClient.get(`/api/requests/status/${ticketCode}`);
-      setResult(res.data);
-    } catch (err) {
-      setError(err.response?.data?.message || 'Kode tiket tidak ditemukan atau terjadi kesalahan.');
-    } finally {
-      setIsLoading(false);
-    }
+    localStorage.setItem('last_ticket_code', ticketCode);
+    setSubmittedCode(ticketCode);
+    refetch();
   };
 
   return (
@@ -94,10 +99,10 @@ const StatusPengajuanPage = () => {
             </div>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isFetching}
               className="px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full shadow-md hover:bg-indigo-700 transition disabled:opacity-50"
             >
-              {isLoading ? <FaSpinner className="animate-spin" /> : 'Lacak'}
+              {isFetching ? <FaSpinner className="animate-spin" /> : 'Lacak'}
             </button>
           </form>
         </motion.div>
@@ -111,11 +116,13 @@ const StatusPengajuanPage = () => {
               className="mt-6 flex items-center justify-center gap-3 bg-red-100 text-red-800 p-4 rounded-xl shadow-sm"
             >
               <FaTimesCircle />
-              <p className="font-medium">{error}</p>
+              <p className="font-medium">
+                {error?.response?.data?.message || 'Kode tiket tidak ditemukan atau terjadi kesalahan.'}
+              </p>
             </motion.div>
           )}
 
-          {result && (
+          {result && isFetched && (
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -123,9 +130,7 @@ const StatusPengajuanPage = () => {
               className="mt-10 bg-white rounded-3xl shadow-lg overflow-hidden"
             >
               <div className="bg-gradient-to-r from-indigo-700 to-indigo-500 p-6">
-                <h3 className="text-white text-2xl font-semibold">
-                  Detail Tiket: {result.ticket_code}
-                </h3>
+                <h3 className="text-white text-2xl font-semibold">Detail Tiket: {result.ticket_code}</h3>
               </div>
               <div className="p-6 space-y-5">
                 <div className="flex justify-between">
@@ -153,7 +158,7 @@ const StatusPengajuanPage = () => {
                 </div>
               </div>
 
-              {/* Timeline Progress */}
+              {/* Timeline */}
               {result.progresses?.length > 0 && (
                 <div className="px-6 pt-8 pb-10 border-t">
                   <h4 className="text-xl font-semibold text-indigo-700 mb-6">Riwayat Progress</h4>

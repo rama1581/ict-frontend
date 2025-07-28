@@ -1,7 +1,6 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import apiClient from './services/api'; // Impor klien API untuk CSRF cookie
+import apiClient from './services/api';
 
 // Impor komponen Layout dan Halaman
 import Layout from './components/Layout';
@@ -22,36 +21,32 @@ import ServiceStatusPage from './pages/ServiceStatusPage';
 import StatusPengajuan from './pages/StatusPengajuan';
 
 function App() {
-  const location = useLocation();
   useEffect(() => {
-    // Minta CSRF cookie dari Sanctum saat aplikasi dimuat
     apiClient.get('/sanctum/csrf-cookie').catch(error => {
       console.error('Could not fetch CSRF cookie:', error);
     });
   }, []);
 
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="pengumuman" element={<NewsPage />} />
-          <Route path="news/:slug" element={<NewsDetailPage />} />
-          <Route path="layanan" element={<LayananPage />} />
-          <Route path="layanan/jaringan" element={<JaringanPage />} />
-          <Route path="layanan/email" element={<EmailPage />} />
-          <Route path="layanan/software" element={<SoftwarePage />} />
-          <Route path="layanan/bantuan" element={<BantuanPage />} />
-          <Route path="panduan" element={<PanduanPage />} />
-          <Route path="dukungan" element={<DukunganPage />} />
-          <Route path="dukungan/faq" element={<FaqPage />} />
-          <Route path="dukungan/kontak" element={<KontakPage />} />
-          <Route path="tentang" element={<TentangPage />} />
-          <Route path="status-layanan" element={<ServiceStatusPage />} />
-          <Route path="status-pengajuan" element={<StatusPengajuan />} />
-        </Route>
-      </Routes>
-    </AnimatePresence>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="pengumuman" element={<NewsPage />} />
+        <Route path="news/:slug" element={<NewsDetailPage />} />
+        <Route path="layanan" element={<LayananPage />} />
+        <Route path="layanan/jaringan" element={<JaringanPage />} />
+        <Route path="layanan/email" element={<EmailPage />} />
+        <Route path="layanan/software" element={<SoftwarePage />} />
+        <Route path="layanan/bantuan" element={<BantuanPage />} />
+        <Route path="panduan" element={<PanduanPage />} />
+        <Route path="dukungan" element={<DukunganPage />} />
+        <Route path="dukungan/faq" element={<FaqPage />} />
+        <Route path="dukungan/kontak" element={<KontakPage />} />
+        <Route path="tentang" element={<TentangPage />} />
+        <Route path="status-layanan" element={<ServiceStatusPage />} />
+        <Route path="status-pengajuan" element={<StatusPengajuan />} />
+      </Route>
+    </Routes>
   );
 }
 

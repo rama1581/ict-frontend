@@ -1,64 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '../services/api';
 import { motion } from 'framer-motion';
-import { FaPaperPlane, FaCopy, FaCheckCircle, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
+import {
+  FaPaperPlane, FaCopy, FaCheckCircle,
+  FaExclamationCircle, FaSpinner
+} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
 const KontakPage = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     category: 'Bantuan Teknis',
     message: '',
   });
-
-  const [status, setStatus] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [ticketCode, setTicketCode] = useState('');
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
     document.title = 'Formulir Pengajuan - ICT Taruna Bakti';
-
-    // Ambil ticket code terakhir dari localStorage saat load
     const savedTicket = localStorage.getItem('lastTicketCode');
-    if (savedTicket) {
-      setTicketCode(savedTicket);
-    }
+    if (savedTicket) setTicketCode(savedTicket);
   }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setStatus({ message: 'Mengirim...', type: 'info' });
-    setTicketCode('');
-
-    try {
-      const response = await apiClient.post('/api/requests', formData);
-      const newTicketCode = response.data.ticket_code;
-
-      // ✅ Simpan ke localStorage
+  const mutation = useMutation({
+    mutationFn: async (data) => {
+      const response = await apiClient.post('/api/requests', data);
+      return response.data;
+    },
+    onMutate: () => {
+      setStatus({ message: 'Mengirim...', type: 'info' });
+      setTicketCode('');
+    },
+    onSuccess: (data) => {
+      const newTicketCode = data.ticket_code;
       localStorage.setItem('lastTicketCode', newTicketCode);
-
       setStatus({ message: `Pengajuan berhasil! Kode Tiket Anda: ${newTicketCode}`, type: 'success' });
       setTicketCode(newTicketCode);
-      setFormData({ name: '', email: '', category: '', message: '' });
-    } catch (error) {
+      setFormData({ name: '', email: '', category: 'Bantuan Teknis', message: '' });
+    },
+    onError: (error) => {
       if (error.response?.status === 422) {
         setStatus({ message: error.response.data.errors.email[0], type: 'error' });
       } else {
         setStatus({ message: 'Terjadi kesalahan pada server. Coba lagi.', type: 'error' });
       }
       console.error(error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+  });
 
   const handleCopy = () => {
     navigator.clipboard.writeText(ticketCode);
@@ -83,7 +78,7 @@ const KontakPage = () => {
           transition={{ duration: 0.5 }}
           className="bg-white p-8 rounded-2xl shadow-lg"
         >
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={(e) => { e.preventDefault(); mutation.mutate(formData); }} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
               <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
@@ -106,9 +101,9 @@ const KontakPage = () => {
               <textarea name="message" id="message" rows="4" value={formData.message} onChange={handleChange} required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
             </div>
             <div>
-              <button type="submit" disabled={isSubmitting} className="w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:bg-slate-400">
-                {isSubmitting ? <FaSpinner className="animate-spin mr-2" /> : <FaPaperPlane className="mr-2" />}
-                {isSubmitting ? 'Mengirim...' : 'Kirim Pengajuan'}
+              <button type="submit" disabled={mutation.isPending} className="w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:bg-slate-400">
+                {mutation.isPending ? <FaSpinner className="animate-spin mr-2" /> : <FaPaperPlane className="mr-2" />}
+                {mutation.isPending ? 'Mengirim...' : 'Kirim Pengajuan'}
               </button>
             </div>
           </form>

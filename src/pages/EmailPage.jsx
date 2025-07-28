@@ -1,6 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaEnvelope, FaGoogle, FaMobileAlt, FaKey } from 'react-icons/fa';
+import {
+  ArrowLeft,
+  Mail,
+  Key,
+  Smartphone,
+  Globe,
+} from 'lucide-react';
 
 const EmailPage = () => {
   useEffect(() => {
@@ -10,15 +16,15 @@ const EmailPage = () => {
   return (
     <div className="bg-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        
         <div className="max-w-4xl mx-auto">
+
           {/* Tombol Kembali */}
           <div className="mb-8">
             <Link 
               to="/layanan" 
               className="inline-flex items-center gap-2 text-indigo-700 hover:text-indigo-900 font-semibold text-sm mb-6 transition-colors no-underline bg-indigo-100 hover:bg-indigo-200 px-4 py-2 rounded-full"
             >
-              <FaArrowLeft />
+              <ArrowLeft className="w-4 h-4" />
               <span>Kembali ke Semua Layanan</span>
             </Link>
           </div>
@@ -29,15 +35,16 @@ const EmailPage = () => {
               Layanan Email & Akun
             </h1>
             <p className="mt-4 text-lg text-slate-600 max-w-3xl">
-              Akun email resmi `@tarunabakti.or.id` adalah identitas digital Anda untuk semua komunikasi dan akses layanan sekolah.
+              Akun email resmi <code>@tarunabakti.or.id</code> adalah identitas digital Anda untuk semua komunikasi dan akses layanan sekolah.
             </p>
           </div>
 
           {/* Konten Utama */}
           <div className="bg-white p-8 rounded-2xl shadow-lg space-y-10">
+            {/* Akses Email */}
             <div>
               <h2 className="text-2xl font-bold text-blue-900 mb-4 flex items-center gap-3">
-                <FaEnvelope className="text-indigo-500" />
+                <Mail className="text-indigo-500 w-6 h-6" />
                 <span>Akses Email Anda</span>
               </h2>
               <p className="text-slate-600 mb-4">
@@ -45,14 +52,16 @@ const EmailPage = () => {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
-                  <FaGoogle size={24} className="text-red-500 flex-shrink-0 mt-1" />
+                  <Globe className="text-red-500 w-6 h-6 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Webmail (via Google)</h3>
-                    <p className="text-sm text-slate-500">Akses melalui <a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 font-medium hover:underline">mail.google.com</a>.</p>
+                    <p className="text-sm text-slate-500">
+                      Akses melalui <a href="https://mail.google.com/" target="_blank" rel="noopener noreferrer" className="text-indigo-600 font-medium hover:underline">mail.google.com</a>.
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4 p-4 bg-slate-50 rounded-lg">
-                  <FaMobileAlt size={24} className="text-green-500 flex-shrink-0 mt-1" />
+                  <Smartphone className="text-green-500 w-6 h-6 flex-shrink-0 mt-1" />
                   <div>
                     <h3 className="font-semibold text-gray-800">Aplikasi Mobile</h3>
                     <p className="text-sm text-slate-500">Gunakan aplikasi Gmail (Android/iOS) dan tambahkan akun baru.</p>
@@ -61,9 +70,10 @@ const EmailPage = () => {
               </div>
             </div>
 
+            {/* Lupa Password */}
             <div>
               <h2 className="text-2xl font-bold text-blue-900 mb-4 flex items-center gap-3">
-                <FaKey className="text-yellow-500" />
+                <Key className="text-yellow-500 w-6 h-6" />
                 <span>Lupa Password</span>
               </h2>
               <p className="text-slate-600">
@@ -71,6 +81,7 @@ const EmailPage = () => {
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </div>

@@ -1,92 +1,88 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import apiClient from '../services/api';
+import { ArrowLeft } from 'lucide-react';
 
-// --- Helper Function untuk Format Tanggal ---
 const formatDate = (dateString) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Date(dateString).toLocaleDateString('id-ID', options);
 };
 
+const fetchNewsDetail = async (slug) => {
+  const response = await apiClient.get(`/api/news/${slug}`);
+  return response.data;
+};
+
 const NewsDetailPage = () => {
   const { slug } = useParams();
-  const [newsItem, setNewsItem] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // useEffect untuk mengatur judul tab browser
+  const {
+    data: newsItem,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['news-detail', slug],
+    queryFn: () => fetchNewsDetail(slug),
+  });
+
   useEffect(() => {
-    // Jika data berita sudah ada, atur judulnya sesuai judul berita
     if (newsItem) {
       document.title = `${newsItem.title} - ICT Taruna Bakti`;
     } else {
-      // Judul default saat sedang loading atau error
       document.title = 'Memuat Berita...';
     }
-  }, [newsItem]); // Efek ini akan berjalan setiap kali 'newsItem' berubah
+  }, [newsItem]);
 
-  // useEffect untuk mengambil data dari API
-  useEffect(() => {
-    const fetchNewsDetail = async () => {
-      try {
-        setLoading(true);
-        const response = await apiClient.get(`/api/news/${slug}`);
-        setNewsItem(response.data);
-      } catch (err) {
-        setError("Berita tidak ditemukan.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNewsDetail();
-  }, [slug]);
-
-  if (loading) return <div className="text-center p-20">Memuat berita...</div>;
-  if (error) return <div className="text-center p-20 text-red-500">{error}</div>;
+  if (isLoading) return <div className="text-center p-20 text-gray-700">Memuat berita...</div>;
+  if (error) return <div className="text-center p-20 text-red-500">Berita tidak ditemukan.</div>;
   if (!newsItem) return null;
 
   return (
-    <div className="bg-white py-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <article>
-          <Link to="/pengumuman" className="text-blue-800 hover:underline mb-8 inline-block">
-            &larr; Kembali ke semua berita
-          </Link>
-          
-          <div className="flex items-center gap-4 mb-4">
-            {/* Bagian ini akan tampil jika data category ada */}
-            {newsItem.category && (
-              <span className="inline-block bg-blue-100 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
-                {newsItem.category.name}
-              </span>
-            )}
-            <span className="text-sm text-gray-500">{formatDate(newsItem.created_at)}</span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-            {newsItem.title}
-          </h1>
-          
-          {/* Bagian ini akan tampil jika data author ada */}
-          <p className="text-lg text-gray-600 mb-8">
-            Oleh: <span className="font-semibold">{newsItem.author?.name || 'Admin'}</span>
-          </p>
-
-          {newsItem.thumbnail && (
-            <img
-              src={`http://ict-backend.test/storage/${newsItem.thumbnail}`}
-              alt={newsItem.title}
-              className="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-lg mb-8"
-            />
-          )}
-
-          <div
-            className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: newsItem.content }}
+    <div className="bg-white">
+      {/* Header Image dengan Judul & Tombol */}
+      {newsItem.thumbnail && (
+        <div className="relative h-[85vh] w-full overflow-hidden">
+          <img
+            src={`http://ict-backend.test/storage/${newsItem.thumbnail}`}
+            alt={newsItem.title}
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
-        </article>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-white/5" />
+          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-16">
+            <Link
+              to="/pengumuman"
+              className="inline-flex items-center gap-2 text-white hover:text-blue-900 border border-white hover:bg-white font-medium text-sm px-4 py-2 rounded-full transition duration-300 shadow-lg mb-6 self-start"
+            >
+              <ArrowLeft size={18} />
+              Kembali ke semua berita
+            </Link>
+            <h1 className="text-white text-4xl md:text-6xl font-extrabold drop-shadow-lg mb-4 leading-tight">
+              {newsItem.title}
+            </h1>
+            <div className="text-white text-sm flex flex-wrap gap-3 items-center drop-shadow">
+              <span className="font-medium">Oleh: {newsItem.author?.name || 'Admin'}</span>
+              <span>•</span>
+              <span>{formatDate(newsItem.created_at)}</span>
+              {newsItem.category && (
+                <>
+                  <span>•</span>
+                  <span className="bg-white/20 text-white font-semibold px-3 py-1 rounded-full text-xs">
+                    {newsItem.category.name}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Konten Berita */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div
+          className="prose prose-lg max-w-none prose-img:rounded-xl prose-img:shadow-md"
+          dangerouslySetInnerHTML={{ __html: newsItem.content }}
+        />
       </div>
     </div>
   );

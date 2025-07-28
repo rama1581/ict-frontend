@@ -1,24 +1,23 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiHelpCircle, FiTool, FiBarChart2 } from 'react-icons/fi'; // Menggunakan ikon yang lebih modern
+import { HelpCircle, Settings, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Data untuk kartu-kartu bantuan
 const supportLinks = [
   {
-    icon: FiBarChart2,
+    icon: Activity,
     title: 'Status Layanan',
     description: 'Lihat status operasional semua layanan ICT secara real-time.',
     link: '/status-layanan'
   },
   {
-    icon: FiHelpCircle,
+    icon: HelpCircle,
     title: 'FAQ',
     description: 'Temukan jawaban dari pertanyaan yang sering diajukan oleh pengguna lain.',
     link: '/dukungan/faq'
   },
   {
-    icon: FiTool,
+    icon: Settings,
     title: 'Ajukan Bantuan',
     description: 'Isi formulir untuk meminta bantuan teknis langsung dari tim kami.',
     link: '/dukungan/kontak'
@@ -61,7 +60,6 @@ const DukunganPage = () => {
               >
                 <Link to={item.link} className="block group h-full">
                   <div className="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl h-full transform hover:-translate-y-2 transition-all duration-300 text-center overflow-hidden">
-                    {/* Efek gradien di background saat hover */}
                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
                     <div className="relative z-10 flex flex-col items-center h-full">
@@ -88,3 +86,4 @@ const DukunganPage = () => {
 };
 
 export default DukunganPage;
+  
