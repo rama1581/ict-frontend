@@ -60,7 +60,7 @@ const StatusPengajuanPage = () => {
       const res = await apiClient.get(`/api/requests/status/${ticketCode}`);
       return res.data;
     },
-    enabled: false, // disabled until form submitted
+    enabled: false,
     retry: false,
   });
 
@@ -106,6 +106,40 @@ const StatusPengajuanPage = () => {
             </button>
           </form>
         </motion.div>
+
+        {/* Skeleton Loading */}
+        {isFetching && (
+          <div className="mt-10 bg-white rounded-3xl shadow-lg overflow-hidden animate-pulse">
+            <div className="bg-gradient-to-r from-indigo-700 to-indigo-500 p-6">
+              <div className="h-6 bg-indigo-400 w-1/3 rounded mb-2" />
+            </div>
+            <div className="p-6 space-y-5">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="flex justify-between">
+                  <div className="h-4 bg-gray-200 w-1/4 rounded" />
+                  <div className="h-4 bg-gray-300 w-1/3 rounded" />
+                </div>
+              ))}
+              <div className="pt-5 border-t">
+                <div className="h-4 bg-gray-300 w-24 mb-2 rounded" />
+                <div className="h-20 bg-gray-100 rounded-xl" />
+              </div>
+            </div>
+            <div className="px-6 pt-8 pb-10 border-t">
+              <div className="h-5 bg-gray-300 w-40 mb-6 rounded" />
+              {[...Array(2)].map((_, i) => (
+                <div key={i} className="mb-8 ml-6 relative">
+                  <span className="absolute w-6 h-6 bg-indigo-300 rounded-full -left-3.5 ring-8 ring-white shadow" />
+                  <div className="p-4 bg-slate-50 rounded-xl border border-gray-200 shadow-sm space-y-2">
+                    <div className="h-3 bg-gray-200 w-32 rounded" />
+                    <div className="h-4 bg-gray-300 w-40 rounded" />
+                    <div className="h-3 bg-gray-200 w-full rounded" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <AnimatePresence>
           {error && (
@@ -158,7 +192,6 @@ const StatusPengajuanPage = () => {
                 </div>
               </div>
 
-              {/* Timeline */}
               {result.progresses?.length > 0 && (
                 <div className="px-6 pt-8 pb-10 border-t">
                   <h4 className="text-xl font-semibold text-indigo-700 mb-6">Riwayat Progress</h4>

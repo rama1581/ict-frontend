@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import apiClient from '../services/api';
 
-// --- Helper Function untuk Format Tanggal dan Jam ---
 const formatDate = (dateString) => {
-  const options = { 
-    year: 'numeric', 
-    month: 'long', 
+  const options = {
+    year: 'numeric',
+    month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
@@ -15,7 +14,6 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString('id-ID', options).replace('.', ':');
 };
 
-// --- Komponen Kartu Berita (Gaya YouTube) ---
 const NewsCard = ({ news }) => {
   return (
     <div className="flex flex-col group">
@@ -45,7 +43,18 @@ const NewsCard = ({ news }) => {
   );
 };
 
-// --- Komponen Utama Halaman News ---
+// --- Skeleton Component ---
+const NewsSkeleton = () => (
+  <div className="flex flex-col animate-pulse">
+    <div className="mb-3 rounded-xl bg-gray-300 h-48 w-full"></div>
+    <div className="flex flex-col space-y-2">
+      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+      <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+      <div className="h-3 bg-gray-300 rounded w-2/5"></div>
+    </div>
+  </div>
+);
+
 const NewsPage = () => {
   React.useEffect(() => {
     document.title = 'Pengumuman - ICT Taruna Bakti';
@@ -59,15 +68,20 @@ const NewsPage = () => {
     },
   });
 
-  if (isLoading) return <div className="text-center p-20">Memuat pengumuman...</div>;
-  if (isError) return <div className="text-center p-20 text-red-500">Gagal memuat berita.</div>;
-
   return (
     <div className="bg-slate-50">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-extrabold text-blue-900 mb-10">Pengumuman Layanan</h1>
-        
-        {data.length > 0 ? (
+
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <NewsSkeleton key={i} />
+            ))}
+          </div>
+        ) : isError ? (
+          <div className="text-center p-20 text-red-500">Gagal memuat berita.</div>
+        ) : data.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
             {data.map((item) => (
               <NewsCard key={item.id} news={item} />

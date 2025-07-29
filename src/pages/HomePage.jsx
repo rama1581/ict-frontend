@@ -44,6 +44,22 @@ function decodeHtmlEntities(str) {
   return txt.value;
 }
 
+// SKELETON COMPONENT
+const FeaturedNewsSkeleton = () => (
+  <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl w-full max-w-4xl px-8 py-16 border border-gray-200 animate-pulse">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center px-6 py-4">
+      <div className="w-full h-64 bg-gray-300 rounded-lg shadow-md"></div>
+      <div className="space-y-4">
+        <div className="h-5 w-32 bg-gray-300 rounded"></div>
+        <div className="h-8 w-3/4 bg-gray-300 rounded"></div>
+        <div className="h-4 w-full bg-gray-300 rounded"></div>
+        <div className="h-4 w-5/6 bg-gray-300 rounded"></div>
+        <div className="h-10 w-40 bg-gray-300 rounded-full"></div>
+      </div>
+    </div>
+  </div>
+);
+
 function HomePage() {
   const { data: featuredNews = [], isLoading, isError } = useQuery({
     queryKey: ['featuredNews'],
@@ -58,30 +74,30 @@ function HomePage() {
 
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-        metaDescription.setAttribute("content", "Selamat datang di halaman beranda ICT Taruna Bakti. Temukan berita terbaru, panduan pengguna, dan informasi penting lainnya.");
+      metaDescription.setAttribute("content", "Selamat datang di halaman beranda ICT Taruna Bakti. Temukan berita terbaru, panduan pengguna, dan informasi penting lainnya.");
     } else {
-        const meta = document.createElement('meta');
-        meta.name = "description";
-        meta.content = "Selamat datang di halaman beranda ICT Taruna Bakti. Temukan berita terbaru, panduan pengguna, dan informasi penting lainnya.";
-        document.head.appendChild(meta);
+      const meta = document.createElement('meta');
+      meta.name = "description";
+      meta.content = "Selamat datang di halaman beranda ICT Taruna Bakti. Temukan berita terbaru, panduan pengguna, dan informasi penting lainnya.";
+      document.head.appendChild(meta);
     }
-}, []);
+  }, []);
 
   return (
     <section className="relative w-full min-h-screen">
-
       <BackgroundSlideshow />
-
       <div className="absolute inset-0 w-full h-full bg-white/70 backdrop-blur-sm z-10"></div>
 
       <div className="relative z-20 w-full h-full flex items-start justify-center pt-35 p-4">
-        {isLoading || featuredNews.length === 0 ? (
-          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center">
-            <p>{isLoading ? 'Memuat berita terbaru...' : 'Tidak ada berita untuk ditampilkan.'}</p>
-          </div>
+        {isLoading ? (
+          <FeaturedNewsSkeleton />
         ) : isError ? (
           <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center text-red-500">
             Gagal memuat berita unggulan.
+          </div>
+        ) : featuredNews.length === 0 ? (
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl p-8 text-center">
+            Tidak ada berita untuk ditampilkan.
           </div>
         ) : (
           <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl w-full max-w-4xl px-8 py-16 border border-gray-200">
