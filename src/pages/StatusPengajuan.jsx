@@ -10,6 +10,10 @@ import {
   FaTools,
 } from 'react-icons/fa';
 import { useQuery } from '@tanstack/react-query';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 const formatDate = (dateString) =>
   new Date(dateString).toLocaleString('id-ID', {
@@ -97,10 +101,16 @@ const StatusPengajuanPage = () => {
                 required
               />
             </div>
+            {/* ================================================================== */}
+            {/* =================== TOMBOL LACAK (DIUBAH) ====================== */}
+            {/* ================================================================== */}
             <button
               type="submit"
               disabled={isFetching}
-              className="px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-full shadow-md hover:bg-indigo-700 transition disabled:opacity-50"
+              className="px-8 py-3 text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:brightness-110 disabled:opacity-50 disabled:transform-none disabled:shadow-md disabled:brightness-100"
+              style={{
+                background: 'linear-gradient(to right, #002874, #54C0DA)'
+              }}
             >
               {isFetching ? <FaSpinner className="animate-spin" /> : 'Lacak'}
             </button>

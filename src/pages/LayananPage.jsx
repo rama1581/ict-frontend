@@ -13,25 +13,25 @@ const services = [
   {
     icon: Network,
     title: 'Jaringan & Internet',
-    description: 'Akses internet cepat dan stabil di seluruh area kampus melalui jaringan WiFi kami.',
+    description: 'Civitas dibekali dengan kemampuan untuk mengakses dan memanfaatkan jaringan serta koneksi internet kampus secara optimal sebagai pendukung utama proses pembelajaran.',
     link: '/layanan/jaringan'
   },
   {
     icon: MailOpen,
     title: 'Email & Akun',
-    description: 'Manajemen akun email resmi Taruna Bakti dan layanan terkait lainnya.',
+    description: 'Civitas memiliki pemahaman yang baik dalam mengelola akun dan email institusi secara profesional untuk keperluan akademik dan komunikasi resmi.',
     link: '/layanan/email'
   },
   {
     icon: AppWindow,
-    title: 'Software & Aplikasi',
-    description: 'Dapatkan lisensi dan akses ke berbagai software pendukung kegiatan belajar.',
+    title: 'Akademik',
+    description: 'Civitas didorong untuk menjadi individu yang mandiri, disiplin, dan kompeten dalam menjalani kegiatan akademik secara digital dan terintegrasi.',
     link: '/layanan/software'
   },
   {
     icon: LifeBuoy,
     title: 'Bantuan Teknis',
-    description: 'Tim kami siap membantu Anda mengatasi berbagai kendala teknis yang dihadapi.',
+    description: 'Civitas diarahkan untuk memahami prosedur permintaan bantuan teknis serta mampu berkomunikasi dengan teknisi secara efektif guna menyelesaikan kendala teknologi yang dihadapi.',
     link: '/layanan/bantuan'
   }
 ];
@@ -83,12 +83,21 @@ const LayananPage = () => {
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
+              whileHover={{ y: -8 }} // Menambahkan efek angkat
+              transition={{ duration: 0.3 }}
               viewport={{ once: true }}
               custom={index}
             >
               <Link to={service.link} className="block group h-full">
                 <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 h-full relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  {/* GRADASI HOVER DIUBAH DI SINI */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background: 'linear-gradient(to right, #002874, #54C0DA)'
+                    }}
+                  ></div>
 
                   <div className="relative z-10">
                     <div className="mb-6 bg-indigo-100 group-hover:bg-white/30 p-4 rounded-full inline-block transition-colors duration-300">
@@ -101,7 +110,7 @@ const LayananPage = () => {
                     <h3 className="text-xl font-bold text-blue-900 mb-2 group-hover:text-white transition-colors duration-300">
                       {service.title}
                     </h3>
-                    <p className="text-slate-600 group-hover:text-indigo-100 transition-colors duration-300">
+                    <p className="text-slate-600 group-hover:text-gray-200 transition-colors duration-300">
                       {service.description}
                     </p>
                   </div>

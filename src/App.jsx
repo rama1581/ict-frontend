@@ -31,7 +31,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<HomePage />} />
-        <Route path="pengumuman" element={<NewsPage />} />
+        <Route path="berita" element={<NewsPage />} />
         <Route path="news/:slug" element={<NewsDetailPage />} />
         <Route path="layanan" element={<LayananPage />} />
         <Route path="layanan/jaringan" element={<JaringanPage />} />

@@ -47,6 +47,9 @@ const DukunganPage = () => {
           </p>
         </motion.div>
 
+        {/* ================================================================== */}
+        {/* ================== KARTU DUKUNGAN (DIUBAH) ===================== */}
+        {/* ================================================================== */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {supportLinks.map((item, index) => {
             const Icon = item.icon;
@@ -57,10 +60,18 @@ const DukunganPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
+                whileHover={{ y: -8 }} // Efek angkat yang konsisten
               >
                 <Link to={item.link} className="block group h-full">
-                  <div className="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl h-full transform hover:-translate-y-2 transition-all duration-300 text-center overflow-hidden">
-                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl h-full transition-all duration-300 text-center overflow-hidden">
+                    
+                    {/* Overlay gradasi disamakan dengan komponen lain */}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: 'linear-gradient(to right, #002874, #54C0DA)'
+                      }}
+                    ></div>
                     
                     <div className="relative z-10 flex flex-col items-center h-full">
                       <div className="bg-indigo-100 group-hover:bg-white/20 p-5 rounded-full mb-6 transition-colors duration-300">
@@ -69,7 +80,7 @@ const DukunganPage = () => {
                       <h3 className="text-2xl font-bold text-blue-900 mb-2 group-hover:text-white transition-colors duration-300">
                         {item.title}
                       </h3>
-                      <p className="text-slate-600 group-hover:text-indigo-100 flex-grow transition-colors duration-300">
+                      <p className="text-slate-600 group-hover:text-gray-200 flex-grow transition-colors duration-300">
                         {item.description}
                       </p>
                     </div>
@@ -86,4 +97,3 @@ const DukunganPage = () => {
 };
 
 export default DukunganPage;
-  

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import apiClient from '../services/api';
+import { motion } from 'framer-motion'; // motion diimpor di sini
 
 const formatDate = (dateString) => {
   const options = {
@@ -14,34 +15,50 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleString('id-ID', options).replace('.', ':');
 };
 
+// ==================================================================
+// =================== KOMPONEN NEWSCARD (DIUBAH) ===================
+// ==================================================================
 const NewsCard = ({ news }) => {
   return (
-    <div className="flex flex-col group">
-      <Link to={`/news/${news.slug}`} className="block mb-3">
-        <div className="relative overflow-hidden rounded-xl shadow-md">
-          <img
-            src={`http://ict-backend.test/storage/${news.thumbnail}`}
-            alt={news.title}
-            className="w-full h-48 object-cover transform group-hover:scale-105 transition-transform duration-300"
-          />
-        </div>
-      </Link>
-      <div className="flex">
-        <div className="flex-grow">
-          <Link to={`/news/${news.slug}`}>
-            <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-blue-800 transition-colors">
+    <motion.div
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.3 }}
+      className="h-full"
+    >
+      <Link to={`/news/${news.slug}`} className="block group h-full bg-white rounded-xl shadow-md relative overflow-hidden">
+        
+        {/* Overlay Gradasi ditambahkan */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-90 transition-all duration-300"
+          style={{
+            background: 'linear-gradient(to right, #002874, #54C0DA)'
+          }}
+        ></div>
+
+        {/* Konten dibungkus agar di atas overlay */}
+        <div className="relative z-10 h-full flex flex-col">
+          <div className="relative">
+            <img
+              src={`http://ict-backend.test/storage/${news.thumbnail}`}
+              alt={news.title}
+              className="w-full h-48 object-cover" // Efek scale dihilangkan untuk konsistensi
+            />
+          </div>
+          <div className="p-4 flex-grow flex flex-col">
+            <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-white transition-colors duration-300 flex-grow">
               {news.title}
             </h3>
-          </Link>
-          <div className="mt-1 text-sm text-gray-600">
-            <p className="font-medium text-gray-800">{news.author?.name || 'Admin'}</p>
-            <p><span>{formatDate(news.created_at)}</span></p>
+            <div className="mt-2 text-sm text-gray-600 group-hover:text-gray-200 transition-colors duration-300">
+              <p className="font-medium">{news.author?.name || 'Admin'}</p>
+              <p><span>{formatDate(news.created_at)}</span></p>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </Link>
+    </motion.div>
   );
 };
+
 
 // --- Skeleton Component ---
 const NewsSkeleton = () => (
@@ -57,7 +74,7 @@ const NewsSkeleton = () => (
 
 const NewsPage = () => {
   React.useEffect(() => {
-    document.title = 'Pengumuman - ICT Taruna Bakti';
+    document.title = 'Berita - ICT Taruna Bakti';
   }, []);
 
   const { data, isLoading, isError } = useQuery({
@@ -71,11 +88,11 @@ const NewsPage = () => {
   return (
     <div className="bg-slate-50">
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-3xl font-extrabold text-blue-900 mb-10">Pengumuman Layanan</h1>
+        <h1 className="text-3xl font-extrabold text-blue-900 mb-10">Berita Terbaru</h1>
 
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
-            {Array.from({ length: 6 }).map((_, i) => (
+            {Array.from({ length: 8 }).map((_, i) => (
               <NewsSkeleton key={i} />
             ))}
           </div>

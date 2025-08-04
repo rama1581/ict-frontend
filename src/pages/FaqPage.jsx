@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // <-- Perbaikan di sini
+import React, { useState, useEffect } from 'react';
 import { FaChevronDown } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -13,10 +13,13 @@ const AccordionItem = ({ question, answer }) => {
 
   return (
     <div className="border-b border-gray-200 py-6">
+      {/* ================================================================== */}
+      {/* ==================== WARNA HOVER (DIUBAH) ======================== */}
+      {/* ================================================================== */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center text-left text-lg font-semibold text-blue-900"
-        whileHover={{ color: '#4f46e5' }}
+        className="w-full flex justify-between items-center text-left text-lg font-semibold text-blue-900 transition-colors"
+        whileHover={{ color: '#54C0DA' }} // Warna disamakan dengan gradien
       >
         <span className="flex-1 pr-4">{question}</span>
         <motion.div

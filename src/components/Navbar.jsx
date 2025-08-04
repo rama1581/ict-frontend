@@ -1,13 +1,21 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLogoHovered, setLogoHovered] = useState(false);
 
   const activeLinkStyle = {
     color: '#000000',
     fontWeight: '600',
+  };
+
+  // Spesifikasi transisi dari Figma
+  const smartAnimate = {
+    duration: 0.3,   // 300ms
+    ease: "easeOut" // Kurva Ease Out
   };
 
   return (
@@ -15,12 +23,33 @@ const Navbar = () => {
       <nav className="max-w-screen-xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-24">
           
+          {/* ================================================================== */}
+          {/* ======================= LOGO (DIPERBAIKI) ======================== */}
+          {/* ================================================================== */}
           <div className="flex-shrink-0">
-            <Link to="/">
-              <img 
-                className="h-14 w-auto" 
-                src="/logo-yayasan.png"
-                alt="Yayasan Taruna Bakti Logo" 
+            <Link 
+              to="/"
+              onMouseEnter={() => setLogoHovered(true)}
+              onMouseLeave={() => setLogoHovered(false)}
+              // Container dibuat relatif & overflow-hidden untuk efek slide
+              className="relative block overflow-hidden"
+            >
+              {/* Logo 2 (Default) - Sekarang ikut beranimasi (fade out) */}
+              <motion.img
+                className="h-14 w-auto"
+                src="/logo2.png"
+                alt="Yayasan Taruna Bakti Logo"
+                animate={{ opacity: isLogoHovered ? 0 : 1 }} // Menghilang saat di-hover
+                transition={smartAnimate}
+              />
+              {/* Logo 1 (Hover) - Tetap bergeser dari kiri */}
+              <motion.img
+                className="absolute top-0 left-0 h-14 w-auto"
+                src="/logo1.png"
+                alt="Yayasan Taruna Bakti Logo Hover"
+                initial={{ x: "-100%" }}
+                animate={{ x: isLogoHovered ? "0%" : "-100%" }}
+                transition={smartAnimate}
               />
             </Link>
           </div>
@@ -32,7 +61,6 @@ const Navbar = () => {
             </NavLink>
 
             <div className="relative group">
-              {/* 👇 DIUBAH MENJADI NAVLINK */}
               <NavLink 
                 to="/layanan" 
                 className="flex items-center gap-2 text-lg font-medium text-blue-900 group-hover:text-black transition-colors focus:outline-none"
@@ -44,7 +72,7 @@ const Navbar = () => {
                 <div className="bg-white shadow-lg rounded-md py-2">
                   <Link to="/layanan/jaringan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Jaringan & Internet</Link>
                   <Link to="/layanan/email" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Email & Akun</Link>
-                  <Link to="/layanan/software" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Software & Aplikasi</Link>
+                  <Link to="/layanan/software" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Akademik</Link>
                   <Link to="/layanan/bantuan" className="block px-4 py-2 text-blue-900 hover:bg-gray-100">Bantuan Teknis</Link>
                 </div>
               </div>
@@ -55,8 +83,7 @@ const Navbar = () => {
             </NavLink>
 
             <div className="relative group">
-               {/* 👇 DIUBAH MENJADI NAVLINK */}
-               <NavLink
+              <NavLink
                 to="/dukungan"
                 className="flex items-center gap-2 text-lg font-medium text-blue-900 group-hover:text-black transition-colors focus:outline-none"
                 style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}
@@ -73,8 +100,8 @@ const Navbar = () => {
               </div>
             </div>
 
-            <NavLink to="/pengumuman" className="text-lg font-medium text-blue-900 hover:text-black transition-colors" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>
-              Pengumuman
+            <NavLink to="/berita" className="text-lg font-medium text-blue-900 hover:text-black transition-colors" style={({ isActive }) => (isActive ? activeLinkStyle : undefined)}>
+              Berita
             </NavLink>
           </div>
 
@@ -98,7 +125,7 @@ const Navbar = () => {
             <h3 className="px-3 pt-4 pb-2 text-sm font-semibold text-gray-500">Layanan</h3>
             <NavLink to="/layanan/jaringan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Jaringan & Internet</NavLink>
             <NavLink to="/layanan/email" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Email & Akun</NavLink>
-            <NavLink to="/layanan/software" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Software & Aplikasi</NavLink>
+            <NavLink to="/layanan/software" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Akademik</NavLink>
             <NavLink to="/layanan/bantuan" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Bantuan Teknis</NavLink>
             <h3 className="px-3 pt-4 pb-2 text-sm font-semibold text-gray-500">Dukungan</h3>
             <NavLink to="/dukungan/kontak" className="block px-3 py-2 rounded-md text-base font-medium text-blue-900 hover:bg-gray-100" onClick={() => setMobileMenuOpen(false)}>Pengajuan Layanan</NavLink>

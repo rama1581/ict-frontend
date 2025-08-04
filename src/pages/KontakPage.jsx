@@ -101,7 +101,17 @@ const KontakPage = () => {
               <textarea name="message" id="message" rows="4" value={formData.message} onChange={handleChange} required className="block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
             </div>
             <div>
-              <button type="submit" disabled={mutation.isPending} className="w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:bg-slate-400">
+              {/* ================================================================== */}
+              {/* ================ TOMBOL KIRIM (DIUBAH) ========================= */}
+              {/* ================================================================== */}
+              <button
+                type="submit"
+                disabled={mutation.isPending}
+                className="w-full inline-flex items-center justify-center py-3 px-4 border border-transparent rounded-full shadow-lg text-lg font-medium text-white transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl hover:brightness-110 disabled:bg-slate-400 disabled:shadow-none disabled:transform-none"
+                style={{
+                  background: 'linear-gradient(to right, #002874, #54C0DA)'
+                }}
+              >
                 {mutation.isPending ? <FaSpinner className="animate-spin mr-2" /> : <FaPaperPlane className="mr-2" />}
                 {mutation.isPending ? 'Mengirim...' : 'Kirim Pengajuan'}
               </button>
@@ -125,10 +135,19 @@ const KontakPage = () => {
             </div>
             {ticketCode && (
               <div className="mt-3">
-                <button onClick={handleCopy} className="text-sm inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded-full">
+                <button onClick={handleCopy} className="text-sm inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded-full transition-colors">
                   <FaCopy /> Salin Kode Tiket
                 </button>
-                <button onClick={goToStatusPage} className="ml-3 text-sm inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-full">
+                {/* ================================================================== */}
+                {/* ================ TOMBOL CEK STATUS (DIUBAH) ==================== */}
+                {/* ================================================================== */}
+                <button
+                  onClick={goToStatusPage}
+                  className="ml-3 text-sm inline-flex items-center gap-2 text-white px-3 py-1 rounded-full transition-all duration-300 shadow hover:shadow-lg hover:brightness-110"
+                  style={{
+                    background: 'linear-gradient(to right, #002874, #54C0DA)'
+                  }}
+                >
                   <FaCheckCircle /> Cek Status Pengajuan
                 </button>
               </div>

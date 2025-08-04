@@ -12,11 +12,16 @@ const SoftwarePage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
         <div className="max-w-4xl mx-auto">
-          {/* Tombol Kembali */}
+          {/* ================================================================== */}
+          {/* ================ TOMBOL KEMBALI (DIUBAH) ======================= */}
+          {/* ================================================================== */}
           <div className="mb-8">
             <Link 
               to="/layanan" 
-               className="inline-flex items-center gap-2 text-indigo-700 hover:text-indigo-900 font-semibold text-sm mb-6 transition-colors no-underline bg-indigo-100 hover:bg-indigo-200 px-4 py-2 rounded-full"
+              className="inline-flex items-center gap-2 text-white font-semibold text-sm transition-all duration-300 no-underline px-4 py-2 rounded-full shadow hover:shadow-lg hover:brightness-110"
+              style={{
+                background: 'linear-gradient(to right, #002874, #54C0DA)'
+              }}
             >
               <FaArrowLeft />
               <span>Kembali ke Semua Layanan</span>
