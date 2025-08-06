@@ -43,8 +43,8 @@ function App() {
         <Route path="dukungan/faq" element={<FaqPage />} />
         <Route path="dukungan/kontak" element={<KontakPage />} />
         <Route path="tentang" element={<TentangPage />} />
-        <Route path="status-layanan" element={<ServiceStatusPage />} />
-        <Route path="status-pengajuan" element={<StatusPengajuan />} />
+        <Route path="dukungan/status-layanan" element={<ServiceStatusPage />} />
+        <Route path="dukungan/status-pengajuan" element={<StatusPengajuan />} />
       </Route>
     </Routes>
   );
