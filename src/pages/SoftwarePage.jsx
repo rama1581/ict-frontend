@@ -4,7 +4,7 @@ import { FaArrowLeft, FaMicrosoft, FaPaintBrush } from 'react-icons/fa';
 
 const SoftwarePage = () => {
   useEffect(() => {
-    document.title = 'Software & Aplikasi - ICT Taruna Bakti';
+    document.title = 'Akademik - ICT Taruna Bakti';
   }, []);
 
   return (
@@ -31,7 +31,7 @@ const SoftwarePage = () => {
           {/* Header Halaman */}
           <div className="text-left mb-12">
             <h1 className="text-4xl font-extrabold text-blue-900 sm:text-5xl tracking-tight">
-              Software & Aplikasi
+              Akademik
             </h1>
             <p className="mt-4 text-lg text-slate-600 max-w-3xl">
               Dapatkan akses ke berbagai perangkat lunak berlisensi untuk mendukung proses pembelajaran Anda.

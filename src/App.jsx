@@ -19,6 +19,7 @@ import KontakPage from './pages/KontakPage';
 import TentangPage from './pages/TentangPage';
 import ServiceStatusPage from './pages/ServiceStatusPage';
 import StatusPengajuan from './pages/StatusPengajuan';
+import PanduanDetailPage from './pages/PanduanDetailPage';
 
 function App() {
   useEffect(() => {
@@ -39,6 +40,7 @@ function App() {
         <Route path="layanan/software" element={<SoftwarePage />} />
         <Route path="layanan/bantuan" element={<BantuanPage />} />
         <Route path="panduan" element={<PanduanPage />} />
+        <Route path="panduan/:slug" element={<PanduanDetailPage />} />
         <Route path="dukungan" element={<DukunganPage />} />
         <Route path="dukungan/faq" element={<FaqPage />} />
         <Route path="dukungan/kontak" element={<KontakPage />} />

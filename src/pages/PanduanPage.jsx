@@ -1,32 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import apiClient from '../services/api';
-import { FaWifi, FaKey, FaMicrosoft, FaLaptop } from 'react-icons/fa';
+import apiClient from '../services/api'; // Pastikan path ini benar
 import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Peta Ikon
-const iconMap = {
-  FaWifi,
-  FaKey,
-  FaMicrosoft,
-  FaLaptop
-};
-
-// ==================================================================
-// ==================== KOMPONEN SKELETON BARU ======================
-// ==================================================================
-const GuideCardSkeleton = () => (
-  <div className="bg-white p-8 rounded-2xl shadow-lg animate-pulse">
-    <div className="bg-gray-200 rounded-full w-14 h-14 mb-4"></div>
-    <div className="h-6 bg-gray-200 rounded w-3/4 mb-3"></div>
-    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-  </div>
-);
-
-
-// Custom hook untuk debounce
+// Custom hook untuk debounce (tidak berubah)
 function useDebounce(value, delay) {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
@@ -37,6 +16,54 @@ function useDebounce(value, delay) {
   }, [value, delay]);
   return debouncedValue;
 }
+
+// Komponen Card untuk Panduan (Gaya Baru)
+const GuideCard = ({ guide }) => (
+  <motion.div
+    whileHover={{ y: -8 }}
+    transition={{ duration: 0.3 }}
+    className="h-full"
+  >
+    <Link to={`/panduan/${guide.slug}`} className="block group h-full bg-white rounded-xl shadow-md relative overflow-hidden">
+      {/* Overlay Gradasi */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-90 transition-all duration-300"
+        style={{ background: 'linear-gradient(to right, #002874, #54C0DA)' }}
+      ></div>
+
+      {/* Konten Kartu */}
+      <div className="relative z-10 h-full flex flex-col">
+        <div className="relative">
+          <img
+            src={guide.thumbnail ? `http://ict-backend.test/storage/${guide.thumbnail}` : 'https://placehold.co/600x400/e2e8f0/e2e8f0?text='}
+            alt={guide.title}
+            className="w-full h-48 object-cover"
+            onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/600x400/e2e8f0/94a3b8?text=Image+Not+Found'; }}
+          />
+        </div>
+        <div className="p-4 flex-grow flex flex-col">
+          <h3 className="text-base font-bold text-gray-900 leading-snug group-hover:text-white transition-colors duration-300 flex-grow">
+            {guide.title}
+          </h3>
+          <p className="mt-2 text-sm text-gray-600 group-hover:text-gray-200 transition-colors duration-300">
+            Kategori: {guide.category}
+          </p>
+        </div>
+      </div>
+    </Link>
+  </motion.div>
+);
+
+// Komponen Skeleton untuk Kartu Panduan (Gaya Baru)
+const GuideCardSkeleton = () => (
+    <div className="flex flex-col animate-pulse bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="bg-gray-300 h-48 w-full"></div>
+      <div className="p-4 space-y-3">
+        <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+        <div className="h-3 bg-gray-300 rounded w-1/2"></div>
+      </div>
+    </div>
+  );
 
 const PanduanPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,7 +80,8 @@ const PanduanPage = () => {
         params: { search: debouncedSearchTerm }
       });
       return response.data.data || [];
-    }
+    },
+    enabled: true, // Query akan selalu berjalan
   });
 
   return (
@@ -74,76 +102,35 @@ const PanduanPage = () => {
         >
           <input
             type="text"
-            placeholder="Cari panduan..."
+            placeholder="Cari panduan berdasarkan judul atau kategori..."
             className="flex-grow text-gray-700 focus:outline-none text-base bg-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button
-            type="button"
-            className="flex items-center gap-2 px-6 py-2 rounded-full text-white font-semibold"
-            style={{
-              background: 'linear-gradient(to right, #002874, #54C0DA)'
-            }}
-          >
-            {isLoading ? '...' : 'Cari'}
-            <Search size={18} />
-          </button>
+           <div className="pl-4">
+             <Search size={20} className="text-gray-400" />
+           </div>
         </motion.div>
 
         {/* Kontainer untuk hasil panduan */}
         <div className="min-h-[40vh]">
           {isLoading ? (
-            // Tampilkan grid skeleton saat loading
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[...Array(6)].map((_, index) => <GuideCardSkeleton key={index} />)}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {[...Array(8)].map((_, index) => <GuideCardSkeleton key={index} />)}
             </div>
           ) : isError ? (
-            // Tampilkan pesan error jika gagal
-            <p className="text-center text-red-500 font-semibold pt-8">Gagal memuat panduan. Silakan coba lagi.</p>
+            <p className="text-center text-red-500 font-semibold pt-8">Gagal memuat panduan. Silakan coba lagi nanti.</p>
           ) : guides.length > 0 ? (
-            // Tampilkan grid hasil jika ada data
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {guides.map((guide, index) => {
-                const Icon = iconMap[guide.icon] || FaLaptop;
-                return (
-                  <motion.div
-                    key={guide.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    whileHover={{ y: -8 }}
-                    className="h-full"
-                  >
-                    <Link to={guide.link} className="block group h-full">
-                      <div className="bg-white p-8 rounded-2xl shadow-lg h-full transition-all duration-300 relative overflow-hidden">
-                        <div
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          style={{ background: 'linear-gradient(to right, #002874, #54C0DA)' }}
-                        ></div>
-                        <div className="relative z-10">
-                          <div className="bg-indigo-100 group-hover:bg-white/20 p-4 rounded-full inline-block mb-4 transition-colors duration-300">
-                            <Icon size={28} className="text-indigo-600 group-hover:text-white transition-colors duration-300" />
-                          </div>
-                          <h3 className="text-xl font-bold text-blue-900 mb-2 group-hover:text-white transition-colors duration-300">
-                            {guide.title}
-                          </h3>
-                          <p className="text-slate-600 group-hover:text-gray-200 text-sm transition-colors duration-300">
-                            Kategori: {guide.category}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.div>
-                );
-              })}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {guides.map((guide) => (
+                <GuideCard key={guide.id} guide={guide} />
+              ))}
             </div>
           ) : (
-            // Tampilkan pesan jika tidak ada hasil
-            <p className="text-center text-gray-500 mt-8">
+            <p className="text-center text-gray-500 mt-8 text-lg">
               {debouncedSearchTerm 
                 ? `Panduan untuk "${debouncedSearchTerm}" tidak ditemukan.` 
-                : "Belum ada panduan yang tersedia."
+                : "Belum ada panduan yang tersedia saat ini."
               }
             </p>
           )}
